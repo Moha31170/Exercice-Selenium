@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class BooksReport:
-
+    # test
     def __init__(self, books, output_file="rapport_livres.txt"):
         self.books = books
         self.output_file = output_file

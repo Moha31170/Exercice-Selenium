@@ -28,6 +28,7 @@ def main():
         print(f"Erreur : {e}")
 
     finally:
+        #TEST
         driver.quit()
 
 
