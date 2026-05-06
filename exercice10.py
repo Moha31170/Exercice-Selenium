@@ -16,14 +16,16 @@ def exercice10():
         wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".card")))
         print("   Produits chargés")
 
-        cards = driver.find_elements(By.CSS_SELECTOR, ".card")
-        assert len(cards) > 0, "Aucun produit trouvé sur la page"
-        print(f"   {len(cards)} produits trouvés\n")
+        total = len(driver.find_elements(By.CSS_SELECTOR, ".card"))
+        assert total > 0, "Aucun produit trouvé sur la page"
+        print(f"   {total} produits trouvés\n")
 
         products = []
-        for card in cards:
-            name_element = card.find_element(By.CSS_SELECTOR, ".card-title")
-            name = name_element.text.strip()
+        for index in range(total):
+            cards = driver.find_elements(By.CSS_SELECTOR, ".card")
+            card = cards[index]
+
+            name = card.find_element(By.CSS_SELECTOR, ".card-title").text.strip()
 
             try:
                 price_element = card.find_element(
@@ -33,8 +35,7 @@ def exercice10():
             except Exception:
                 price = "Prix non disponible"
 
-            card_classes = card.get_attribute("class")
-            out_of_stock = "out-of-stock" in card_classes
+            out_of_stock = "out-of-stock" in card.get_attribute("class")
 
             products.append(
                 {
@@ -44,9 +45,9 @@ def exercice10():
                 }
             )
 
-        assert len(products) == len(
-            cards
-        ), f"Incohérence : {len(cards)} cartes mais {len(products)} produits extraits"
+        assert (
+            len(products) == total
+        ), f"Incohérence : {total} cartes mais {len(products)} produits extraits"
 
         print("=== 5 premiers produits ===")
         for product in products[:5]:
